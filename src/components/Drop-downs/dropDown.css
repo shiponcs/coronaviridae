@@ -1,6 +1,7 @@
 .drop-down {
   margin: 10px 10px;
   display: flex;
+  /* height: fit-content; */
 }
 #loading-spinner {
   color: rgb(183, 183, 235);

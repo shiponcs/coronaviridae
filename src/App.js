@@ -3,6 +3,7 @@ import DropDown from "./components/Drop-downs/DropDowns";
 import TextResults from "./components/Text-Results/textResults";
 import Container from "react-bootstrap/Container";
 import Footer from "./components/Footer/footer";
+import BarChart from "./components/charts/BarChart";
 
 import logo from "./logo.svg";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -12,12 +13,13 @@ function App() {
   const [countries, setCountries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState({
-    confirmed: { value: 0 },
+    confirmed: { value: 1200 },
     deaths: { value: 0 },
     recovered: { value: 0 },
     active: { value: 0 },
     lastUpdate: new Date().toLocaleDateString(),
   });
+
   useEffect(() => {
     fetch("https://covid19.mathdro.id/api/countries")
       .then((resp) => resp.json())
@@ -59,6 +61,11 @@ function App() {
         />
 
         <TextResults {...results} />
+        <div
+          key={`${results.confirmed.value}-${results.deaths.value}-${results.recovered.value}`}
+        >
+          <BarChart {...results} />
+        </div>
       </Container>
       <Footer />
     </div>
