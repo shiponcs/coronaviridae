@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "0b767d7dfccdf1305dc777636aff6451",
+    "revision": "72faf1619a8ab6aeefbc8399b9bc4faf",
     "url": "/coronaviridae/index.html"
   },
   {
-    "revision": "38b55f268c0f1bf96f5d",
+    "revision": "085e18ec41e61d1ba375",
     "url": "/coronaviridae/static/css/2.69121389.chunk.css"
   },
   {
-    "revision": "f46d97a191f0d8f2fbbe",
-    "url": "/coronaviridae/static/css/main.bb464195.chunk.css"
+    "revision": "8922c074b9b26dea3061",
+    "url": "/coronaviridae/static/css/main.5b214d45.chunk.css"
   },
   {
-    "revision": "38b55f268c0f1bf96f5d",
-    "url": "/coronaviridae/static/js/2.f94a3e84.chunk.js"
+    "revision": "085e18ec41e61d1ba375",
+    "url": "/coronaviridae/static/js/2.a392b0d1.chunk.js"
   },
   {
-    "revision": "5ac48c47bb3912b14c2d8de4f56d5ae8",
-    "url": "/coronaviridae/static/js/2.f94a3e84.chunk.js.LICENSE.txt"
+    "revision": "13767bda7e58db6e95d0e3d841e04d61",
+    "url": "/coronaviridae/static/js/2.a392b0d1.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "f46d97a191f0d8f2fbbe",
-    "url": "/coronaviridae/static/js/main.88f3dcc2.chunk.js"
+    "revision": "8922c074b9b26dea3061",
+    "url": "/coronaviridae/static/js/main.e4095b8d.chunk.js"
   },
   {
     "revision": "1c56aa822f1ea717f3d2",
