@@ -1,0 +1,8 @@
+.drop-down {
+  margin: 10px 10px;
+  display: flex;
+}
+#loading-spinner {
+  color: rgb(183, 183, 235);
+  /* float: right; */
+}

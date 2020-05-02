@@ -1,0 +1,12 @@
+footer {
+  /* background-color: white; */
+  color: rgb(248, 237, 237);
+  margin-top: 150px;
+  margin-left: 20px;
+  float: right;
+}
+
+span {
+  text-decoration: wavy;
+  color: peru;
+}

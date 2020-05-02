@@ -1,0 +1,24 @@
+.makeWhite {
+  color: white;
+}
+
+.bold {
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+}
+
+.large-font {
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  font-size: large;
+}
+
+.eighty-percent-width {
+  width: 60%;
+  margin: 0 0 50px 10px;
+  padding-left: 8px;
+  border-left: 2px solid rgb(218, 202, 202);
+}
+
+.apply-min-width {
+  min-width: 210px;
+}
