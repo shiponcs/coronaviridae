@@ -62,7 +62,7 @@ function App() {
 
         <TextResults {...results} />
         <div
-          key={`${results.confirmed.value}-${results.deaths.value}-${results.recovered.value}`}
+        // key={`${results.confirmed.value}-${results.deaths.value}-${results.recovered.value}`}
         >
           <BarChart {...results} />
         </div>

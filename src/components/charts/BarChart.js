@@ -5,16 +5,24 @@ class BarChart extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+    this.state = {};
+  }
+  componentDidMount() {
+    console.log("we are saying from componenDidMount function");
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    console.log("hello");
+    return {
       data: {
         labels: ["Recovered", "Infected", "Death"],
         datasets: [
           {
             label: ["Recovered", "Infected", "Death"],
             data: [
-              this.props.recovered.value,
-              this.props.confirmed.value,
-              this.props.deaths.value,
+              props.recovered.value,
+              props.confirmed.value,
+              props.deaths.value,
             ],
             backgroundColor: [
               "rgba(54, 162, 235, 0.2)",
@@ -32,10 +40,12 @@ class BarChart extends React.Component {
       },
     };
   }
+
   render() {
     return (
-      <div key={this.props.lastUpdate}>
+      <div>
         <Bar data={this.state.data} />
+        {/* {this.props.deaths.value} */}
       </div>
     );
   }
