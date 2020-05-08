@@ -1,53 +1,94 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import DropDown from "./components/Drop-downs/DropDowns";
 import TextResults from "./components/Text-Results/textResults";
 import Container from "react-bootstrap/Container";
 import Footer from "./components/Footer/footer";
 import BarChart from "./components/charts/BarChart";
-
-import logo from "./logo.svg";
+import { endpoint } from "./apiEndpoint";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
-function App() {
-  const [countries, setCountries] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [results, setResults] = useState({
-    confirmed: { value: 1200 },
+const LOADING = "LOADING";
+const ACTION_COMPLETE = "ACTION_COMPLETE";
+const ERROR = "ERROR";
+
+const initialState = {
+  response: {
+    confirmed: { value: 0 },
     deaths: { value: 0 },
     recovered: { value: 0 },
     active: { value: 0 },
     lastUpdate: new Date().toLocaleDateString(),
-  });
+  },
+  loading: true,
+  error: null,
+};
+
+const reducer = (state, action) => {
+  if (action.type === LOADING) {
+    return {
+      response: state.response,
+      loading: true,
+      error: null,
+    };
+  }
+  if (action.type === ACTION_COMPLETE) {
+    return {
+      response: action.payload.response,
+      loading: false,
+      error: null,
+    };
+  }
+  if (action.type === ERROR) {
+    return {
+      response: null,
+      loading: false,
+      error: action.payload.error.message,
+    };
+  }
+  return state;
+};
+
+function App() {
+  const [results, resultDispatch] = useReducer(reducer, initialState);
+  const [countries, setCountries] = useState([]);
+  console.log(results);
 
   useEffect(() => {
-    fetch("https://covid19.mathdro.id/api/countries")
+    resultDispatch({ type: LOADING });
+
+    fetch(endpoint + "/countries")
       .then((resp) => resp.json())
       .then(({ countries }) => {
         setCountries(countries);
       });
 
-    fetch("https://covid19.mathdro.id/api")
+    fetch(endpoint)
       .then((resp) => resp.json())
       .then(({ confirmed, deaths, recovered, lastUpdate }) => {
-        setResults({ confirmed, deaths, recovered, lastUpdate });
+        resultDispatch({
+          type: ACTION_COMPLETE,
+          payload: { response: { confirmed, deaths, recovered, lastUpdate } },
+        });
         console.log(confirmed, deaths, recovered, lastUpdate);
-        setLoading(false);
+      })
+      .catch((error) => {
+        resultDispatch({ type: ERROR, payload: { error } });
       });
   }, []);
 
   const getCountryData = (country) => {
+    resultDispatch({ type: LOADING });
     const url =
-      country === "global"
-        ? "https://covid19.mathdro.id/api"
-        : `https://covid19.mathdro.id/api/countries/${country}`;
-    setLoading(true);
+      country === "global" ? endpoint : endpoint + `/countries/${country}`;
     fetch(url)
       .then((resp) => resp.json())
       .then(({ confirmed, deaths, recovered, lastUpdate }) => {
         console.log(confirmed, deaths, recovered, lastUpdate);
-        setResults({ confirmed, deaths, recovered, lastUpdate });
-        setLoading(false);
+        resultDispatch({
+          type: ACTION_COMPLETE,
+          payload: { response: { confirmed, deaths, recovered, lastUpdate } },
+        });
       });
   };
 
@@ -56,15 +97,15 @@ function App() {
       <Container>
         <DropDown
           countries={countries}
-          loading={loading}
+          loading={results.loading}
           handlSelectClick={getCountryData}
         />
 
-        <TextResults {...results} />
+        <TextResults {...results.response} />
         <div
         // key={`${results.confirmed.value}-${results.deaths.value}-${results.recovered.value}`}
         >
-          <BarChart {...results} />
+          <BarChart {...results.response} />
         </div>
       </Container>
       <Footer />
