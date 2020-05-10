@@ -49,8 +49,40 @@ const reducer = (state, action) => {
   return state;
 };
 
+const getFetchResults = (country) => {
+  const url =
+    country === "global" ? endpoint : endpoint + `/countries/${country}`;
+  const fetchResults = (dispatch) => {
+    dispatch({ type: LOADING });
+    fetch(url)
+      .then((response) => response.json())
+      .then(({ confirmed, deaths, recovered, lastUpdate }) => {
+        console.log(confirmed, deaths, recovered, lastUpdate);
+        dispatch({
+          type: ACTION_COMPLETE,
+          payload: { response: { confirmed, deaths, recovered, lastUpdate } },
+        });
+      });
+  };
+  return fetchResults;
+};
+
+const useThunkReducer = (reducer, initialState) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const thunkDispatch = (action) => {
+    if (typeof action === "function") {
+      action(dispatch);
+    } else {
+      dispatch(action);
+    }
+  };
+
+  return [state, thunkDispatch];
+};
+
 function App() {
-  const [results, resultDispatch] = useReducer(reducer, initialState);
+  const [results, resultDispatch] = useThunkReducer(reducer, initialState);
   const [countries, setCountries] = useState([]);
   console.log(results);
 
@@ -63,33 +95,11 @@ function App() {
         setCountries(countries);
       });
 
-    fetch(endpoint)
-      .then((resp) => resp.json())
-      .then(({ confirmed, deaths, recovered, lastUpdate }) => {
-        resultDispatch({
-          type: ACTION_COMPLETE,
-          payload: { response: { confirmed, deaths, recovered, lastUpdate } },
-        });
-        console.log(confirmed, deaths, recovered, lastUpdate);
-      })
-      .catch((error) => {
-        resultDispatch({ type: ERROR, payload: { error } });
-      });
+    resultDispatch(getFetchResults("global"));
   }, []);
 
   const getCountryData = (country) => {
-    resultDispatch({ type: LOADING });
-    const url =
-      country === "global" ? endpoint : endpoint + `/countries/${country}`;
-    fetch(url)
-      .then((resp) => resp.json())
-      .then(({ confirmed, deaths, recovered, lastUpdate }) => {
-        console.log(confirmed, deaths, recovered, lastUpdate);
-        resultDispatch({
-          type: ACTION_COMPLETE,
-          payload: { response: { confirmed, deaths, recovered, lastUpdate } },
-        });
-      });
+    resultDispatch(getFetchResults(country));
   };
 
   return (
